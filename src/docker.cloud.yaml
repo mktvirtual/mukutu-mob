@@ -22,7 +22,9 @@ services:
       retries: 20
 
   wordpress:
-    image: wordpress:latest
+    build:
+      context: .
+      dockerfile: src/wordpress.Dockerfile
     restart: unless-stopped
     depends_on:
       db:
@@ -62,8 +64,6 @@ services:
         define('WP_SITEURL', 'https://wp.mukutu.cloud');
     volumes:
       - wp:/var/www/html
-      # The theme comes from the repository clone Coolify made on the server.
-      - ./theme/mukutu-base:/var/www/html/wp-content/themes/mukutu-base
 
   # Runs once, then exits: installs core and the free ACF from wordpress.org.
   provision:
@@ -84,7 +84,6 @@ services:
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
     volumes:
       - wp:/var/www/html
-      - ./theme/mukutu-base:/var/www/html/wp-content/themes/mukutu-base
     user: "33:33"
     entrypoint: ["/bin/sh", "-c"]
     # One list item, so the whole script reaches `sh -c` as a single argument:
