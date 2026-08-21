@@ -29,6 +29,24 @@ services:
         condition: service_healthy
     expose:
       - "80"
+    networks:
+      - default
+      - coolify
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=coolify
+      - traefik.http.middlewares.gzip-fia-wp.compress=true
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.routers.fia-wp-http.entryPoints=web
+      - traefik.http.routers.fia-wp-http.rule=Host(`wp.mukutu.cloud`)
+      - traefik.http.routers.fia-wp-http.middlewares=redirect-to-https@docker
+      - traefik.http.routers.fia-wp.entryPoints=websecure
+      - traefik.http.routers.fia-wp.rule=Host(`wp.mukutu.cloud`)
+      - traefik.http.routers.fia-wp.tls=true
+      - traefik.http.routers.fia-wp.tls.certresolver=le
+      - traefik.http.routers.fia-wp.middlewares=gzip-fia-wp
+      - traefik.http.routers.fia-wp.service=fia-wp
+      - traefik.http.services.fia-wp.loadbalancer.server.port=80
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: wordpress
@@ -59,21 +77,25 @@ services:
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
     volumes:
       - wp:/var/www/html
     user: "33:33"
     entrypoint: ["/bin/sh", "-c"]
-    command: >
-      until wp core is-installed --allow-root 2>/dev/null || wp db check --allow-root >/dev/null 2>&1; do sleep 2; done;
-      wp core install
-        --url=https://wp.mukutu.cloud
-        --title="FIA Digital"
-        --admin_user=${WP_ADMIN_USER}
-        --admin_password=${WP_ADMIN_PASSWORD}
-        --admin_email=${WP_ADMIN_EMAIL}
-        --skip-email --allow-root || true;
-      wp plugin install advanced-custom-fields --activate --allow-root;
-      wp plugin list --allow-root
+    command:
+      - >
+        until wp core is-installed --allow-root 2>/dev/null || wp db check --allow-root >/dev/null 2>&1; do sleep 2; done;
+        wp core install --url=https://wp.mukutu.cloud --title="FIA Digital"
+        --admin_user="$${WP_ADMIN_USER}" --admin_password="$${WP_ADMIN_PASSWORD}"
+        --admin_email="$${WP_ADMIN_EMAIL}" --skip-email --allow-root || true;
+        wp plugin install advanced-custom-fields --activate --allow-root;
+        wp plugin list --allow-root
+
+networks:
+  coolify:
+    external: true
 
 volumes:
   db:
