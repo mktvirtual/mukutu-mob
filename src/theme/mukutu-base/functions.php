@@ -43,6 +43,10 @@ function mukutu_assets() {
 	wp_enqueue_script( 'gsap', mukutu_asset( 'vendor/gsap.min.js' ), array(), null, true );
 	wp_enqueue_script( 'gsap-scrolltrigger', mukutu_asset( 'vendor/ScrollTrigger.min.js' ), array( 'gsap' ), null, true );
 	wp_enqueue_script( 'mukutu', mukutu_asset( 'script.js' ), array( 'swiper', 'gsap-scrolltrigger' ), null, true );
+
+	if ( is_page_template( 'page-ds.php' ) || is_page( 'ds' ) ) {
+		wp_enqueue_style( 'mukutu-ds', mukutu_asset( 'ds.css' ), array( 'mukutu' ), null );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'mukutu_assets' );
 
@@ -86,3 +90,4 @@ function mukutu_classic_editor_on_front_page( $use_block_editor, $post ) {
 add_filter( 'use_block_editor_for_post', 'mukutu_classic_editor_on_front_page', 10, 2 );
 
 require_once MUKUTU_DIR . '/inc/post-types.php';
+require_once MUKUTU_DIR . '/inc/tokens.php';

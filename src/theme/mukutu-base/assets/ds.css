@@ -1,0 +1,213 @@
+/* ==========================================================================
+   Design System — página /ds
+   Só o chrome da página (sidebar, grade, cartões). Os componentes exibidos
+   usam o CSS real do tema, nunca uma cópia.
+   ========================================================================== */
+
+.ds {
+  --ds-sidebar: 248px;
+  --ds-line: oklch(0 0 0 / 0.1);
+  display: grid;
+  grid-template-columns: var(--ds-sidebar) minmax(0, 1fr);
+  gap: 48px;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 48px var(--pad) 96px;
+}
+
+/* Sidebar --------------------------------------------------------------- */
+
+.ds__sidebar {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.ds__brand {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary-green);
+  margin-bottom: 4px;
+}
+
+.ds__brand-sub {
+  font-size: 13px;
+  color: var(--color-neutral-gray);
+  opacity: 0.6;
+  margin-bottom: 24px;
+}
+
+.ds__nav a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color-neutral-gray);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.ds__nav a:hover,
+.ds__nav a:focus-visible {
+  background: var(--color-secondary-greenish);
+  color: var(--color-primary-green);
+}
+
+/* Conteúdo -------------------------------------------------------------- */
+
+.ds__section {
+  padding-block: 32px;
+  border-top: 1px solid var(--ds-line);
+  scroll-margin-top: 24px;
+}
+
+.ds__section:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.ds__title {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary-aqua);
+  margin-bottom: 8px;
+}
+
+.ds__heading {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-primary-green);
+  margin-bottom: 8px;
+}
+
+.ds__note {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 62ch;
+  opacity: 0.75;
+  margin-bottom: 24px;
+}
+
+.ds__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+/* Cor -------------------------------------------------------------------- */
+
+.ds-swatch {
+  border: 1px solid var(--ds-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-neutral-white);
+}
+
+.ds-swatch__chip {
+  height: 84px;
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.ds-swatch__meta {
+  padding: 12px;
+  display: grid;
+  gap: 2px;
+}
+
+.ds-swatch__name,
+.ds-token__name {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  color: var(--color-primary-green);
+  word-break: break-all;
+}
+
+.ds-swatch__value,
+.ds-token__value {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  opacity: 0.6;
+  word-break: break-all;
+}
+
+/* Token genérico (layout, motion) ---------------------------------------- */
+
+.ds-token {
+  border: 1px solid var(--ds-line);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 4px;
+}
+
+/* Tipografia -------------------------------------------------------------- */
+
+.ds-type {
+  border-top: 1px solid var(--ds-line);
+  padding-block: 20px;
+}
+
+.ds-type__sample {
+  color: var(--color-primary-green);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.ds-type__meta {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Vitrine de componentes -------------------------------------------------- */
+
+.ds-demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--ds-line);
+  border-radius: 12px;
+  background: var(--color-secondary-greenish);
+}
+
+.ds-demo--dark {
+  background: var(--color-primary-green);
+}
+
+.ds-demo__label {
+  width: 100%;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.ds-demo--dark .ds-demo__label {
+  color: var(--color-neutral-white);
+}
+
+.ds-list {
+  display: grid;
+  gap: 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .ds {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .ds__sidebar {
+    position: static;
+    max-height: none;
+  }
+}
