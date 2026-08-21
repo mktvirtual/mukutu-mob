@@ -67,6 +67,7 @@ JSON
 , true );
 
 foreach ( $mukutu_seed as $type => $items ) {
+	$kept = array();
 	foreach ( $items as $order => $item ) {
 		// Chaveado por slug, nao por titulo: os tres depoimentos do prototipo
 		// se chamam "Nome do Aluno" e casar pelo titulo colapsou os tres num
@@ -102,6 +103,16 @@ foreach ( $mukutu_seed as $type => $items ) {
 			}
 			update_field( $field, $value, $id );
 		}
+		$kept[] = $id;
 		WP_CLI::log( sprintf( '%s: %s -> %s (#%d)', $type, $item['title'], $slug, $id ) );
+	}
+
+	// Qualquer post do tipo que nao veio deste seed e sobra de uma rodada
+	// anterior e duplicaria a secao na home.
+	foreach ( get_posts( array( 'post_type' => $type, 'post_status' => 'any', 'posts_per_page' => -1, 'fields' => 'ids' ) ) as $orphan ) {
+		if ( ! in_array( $orphan, $kept, true ) ) {
+			wp_delete_post( $orphan, true );
+			WP_CLI::log( sprintf( '%s: removido orfao #%d', $type, $orphan ) );
+		}
 	}
 }
