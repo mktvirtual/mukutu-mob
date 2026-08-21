@@ -14,8 +14,25 @@ number is the order the work was decided, never renumbered; the name is at most
 five words, lowercase, underscore-separated.
 
 Each task doc says why it exists, what it produces, and what proves it worked —
-including what it depends on. The doc is the only thing in the folder: code
-lives in `src/`, and a task points at a path there instead of owning one.
+including what it depends on. Code lives in `src/`: a task points at a path
+there instead of owning one.
+
+Running a task writes `OUTPUT.md` beside its `CONTEXT.md`. `CONTEXT.md` is the
+plan and stops changing; `OUTPUT.md` is the receipt and is the only file that
+records what actually happened.
+
+## What an OUTPUT.md carries
+
+**A receipt nobody can re-check is a claim.** So `OUTPUT.md` names the commits
+by short SHA, the files by path, the commands verbatim, and the numbers as
+measured — versions, status codes, counts.
+
+State the verdict first: done, partial or blocked. Then what was verified, then
+what was NOT, plainly. A silent gap reads as a covered one, and a defect found
+in someone else's code belongs here too.
+
+Commit and push every time it changes. The class follows this repository live,
+so a receipt sitting unpushed on this machine does not exist.
 
 ## The custom fields layer
 
