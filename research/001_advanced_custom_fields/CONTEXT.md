@@ -54,13 +54,16 @@ limits; its export is our field source of truth.
 Task 003 must name each field's type and whether it repeats. Research says
 "repeats" is not free — that decision now has a price.
 
-## What is not verified
+## Measured, not read
 
-The Repeater page never states plainly that Repeater is PRO-only. The claim
-comes from feature lists on the homepage and resources index.
+**Confirmed in our own container: free ACF ships no Repeater.** Its
+`includes/fields/` holds 33 classes and no `repeater`, `flexible_content`,
+`gallery` or `clone`, and no `pro/` directory.
 
-Our own container settles it: which field classes ship inside the installed
-free plugin. That check is running, unreported.
+Versions installed by task 001: WordPress **7.1**, ACF **6.8.8**. See
+`tasks/001_wordpress_docker_baseline/OUTPUT.md`.
 
-Version numbers are also unmeasured. `latest` resolved to something specific in
-001, and this doc must record it once that lands.
+## Still unverified
+
+Whether a PRO licence is worth buying, and what a repeating block costs when
+modelled without Repeater. Both are decisions, not measurements.

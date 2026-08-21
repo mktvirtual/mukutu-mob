@@ -1,18 +1,21 @@
 name: fia-wordpress
 
 services:
+  # MariaDB, not MySQL 8.4: the latter forces TLS and wp-cli then fails the
+  # connection with "self-signed certificate in certificate chain".
   db:
-    image: mysql:8.4
+    image: mariadb:11
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
       MYSQL_ROOT_PASSWORD: root
+      MARIADB_AUTO_UPGRADE: "1"
     volumes:
       - db:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -50,17 +53,26 @@ services:
       - wp:/var/www/html
     user: "33:33"
     entrypoint: ["/bin/sh", "-c"]
-    command: >
-      until wp core is-installed --allow-root 2>/dev/null || wp db check --allow-root >/dev/null 2>&1; do sleep 2; done;
-      wp core install
-        --url=http://localhost:8081
-        --title="FIA Digital"
-        --admin_user=admin
-        --admin_password=admin
-        --admin_email=dev@example.com
-        --skip-email --allow-root || true;
-      wp plugin install advanced-custom-fields --activate --allow-root;
-      wp plugin list --allow-root
+    # One list item, so the whole script reaches `sh -c` as a single argument.
+    command:
+      - |
+        set -e
+        until wp db check --allow-root >/dev/null 2>&1; do
+          echo "waiting for database..."
+          sleep 3
+        done
+        if ! wp core is-installed --allow-root; then
+          wp core install \
+            --url=http://localhost:8081 \
+            --title="FIA Digital" \
+            --admin_user=admin \
+            --admin_password=admin \
+            --admin_email=dev@example.com \
+            --skip-email --allow-root
+        fi
+        wp plugin install advanced-custom-fields --activate --allow-root
+        wp core version --allow-root
+        wp plugin list --allow-root
 
 volumes:
   db:

@@ -34,6 +34,23 @@ in someone else's code belongs here too.
 Commit and push every time it changes. The class follows this repository live,
 so a receipt sitting unpushed on this machine does not exist.
 
+## How a screen gets checked
+
+**Visual claims are settled with `qa-drive`, driving a real browser over CDP.**
+It is the only sanctioned way to say a page renders, an interaction fires, or a
+console is clean.
+
+```sh
+S=~/.claude/skills/qa-drive
+uv run --project $S --no-sync $S/scripts/lifecycle/launch.py --browser chrome --url http://localhost:8001
+uv run --project $S --no-sync $S/scripts/assert/text.py --css "#hero h1" --contains "FIA" --for 5
+uv run --project $S --no-sync $S/scripts/lifecycle/teardown.py
+```
+
+Anything with a timer, a fetch or an IntersectionObserver needs `--for` — this
+page reveals on scroll, so a one-shot assert reads the pre-render value and lies.
+Sessions land in `.qa-drive/`, which is gitignored.
+
 ## The custom fields layer
 
 **The team uses Advanced Custom Fields.** Every editable field in a WordPress
