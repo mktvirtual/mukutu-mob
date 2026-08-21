@@ -12,7 +12,8 @@ max_paragraphs_per_section: 3
 editable field.** This is the whole migration: markup split into templates,
 assets enqueued, content read from field groups.
 
-Split the work inside the task, not into more folders: first transcribe
+The theme is `src/theme/fia-digital/`, mounted into the 001 containers. Split
+the work inside the task, not into more folders: first transcribe
 (`header.php`, `front-page.php`, `footer.php`, `wp_enqueue_*`) with everything
 still hardcoded, then decide with a human which content becomes a field, then
 register the ACF group and replace the literals.
@@ -39,7 +40,7 @@ the check is an edit, not a page load.
 
 Close it visually too: theme and prototype side by side at desktop and mobile,
 screenshots, and every remaining difference named. Then the static path dies —
-`public/`, the Pages workflow, and every reference to `public/index.html` — and
+`src/prototype/`, the Pages workflow, and every reference to `public/index.html` — and
 the proof is a search returning nothing.
 
 Depends on 001 (baseline with ACF) and 002 (the reference screens).

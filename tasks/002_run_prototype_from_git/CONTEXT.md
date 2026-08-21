@@ -19,15 +19,16 @@ is what 003 has to reproduce.
 ## How to run it
 
 ```sh
-gh repo clone felipemukutu/fia-digital-test
-cd fia-digital-test/public && python3 -m http.server 8000   # http://localhost:8000
+gh repo clone felipemukutu/fia-digital-test src/prototype
+cd src/prototype/public && python3 -m http.server 8000   # http://localhost:8000
 ```
 
 A plain static server is enough: no Node, no build, no dependency install.
-Swiper, GSAP and ScrollTrigger are vendored under `public/assets/vendor/`; DM
+Swiper, GSAP and ScrollTrigger are vendored under `src/prototype/public/assets/vendor/`; DM
 Sans is the single external request, so the page needs network for fonts only.
 
-Opening `index.html` from the filesystem also mostly works, but `file://` breaks
+`src/prototype/` is gitignored — it is a clone of another repository, not our
+code. Opening `index.html` from the filesystem also mostly works, but `file://` breaks
 on some asset paths — serve it over HTTP and avoid the false negative.
 
 ## What proves it works

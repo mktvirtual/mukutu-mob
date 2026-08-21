@@ -2,3 +2,6 @@
 .env
 .env.*
 *.local
+
+# clone do protótipo estático, vive em outro repositório
+src/prototype/

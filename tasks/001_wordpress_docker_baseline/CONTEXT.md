@@ -24,10 +24,11 @@ question, not a provisioning one.
 ## How to run it
 
 ```sh
-docker compose -f docker.yaml up -d      # http://localhost:8080
-docker compose -f docker.yaml logs provision
-docker compose -f docker.yaml down       # stop, keep data
-docker compose -f docker.yaml down -v    # destroy data, back to zero
+# a partir da raiz do repositório
+docker compose -f src/docker.yaml up -d      # http://localhost:8080
+docker compose -f src/docker.yaml logs provision
+docker compose -f src/docker.yaml down       # stop, keep data
+docker compose -f src/docker.yaml down -v    # destroy data, back to zero
 ```
 
 Three services: `db` (mysql:8.4, healthchecked), `wordpress` (`latest`, port
@@ -45,7 +46,7 @@ wp-admin — local-only, never reused anywhere else. State lives in the `db` and
 running container with a failed provision step looks identical from
 `docker ps`.
 
-The check is `docker compose -f docker.yaml run --rm provision wp plugin list
+The check is `docker compose -f src/docker.yaml run --rm provision wp plugin list
 --allow-root`, expecting `advanced-custom-fields` with status `active`, plus a
 `200` from `curl -sI localhost:8080`. Record both the WordPress and the ACF
 version reported — `latest` is a moving target and later tasks inherit whatever

@@ -3,8 +3,9 @@
 Migração da home da **FIA Digital** — de protótipo estático (HTML/CSS/JS, gerado
 do Figma) para tema WordPress com Advanced Custom Fields.
 
-O trabalho está em `tasks/`, uma pasta por tarefa. Cada `CONTEXT.md` diz por que
-a tarefa existe, como rodar, e o que prova que funcionou.
+O raciocínio está em `tasks/`, uma pasta por tarefa — cada `CONTEXT.md` diz por
+que a tarefa existe, como rodar, e o que prova que funcionou. O código está em
+`src/`.
 
 | Tarefa | O quê |
 | --- | --- |
@@ -16,6 +17,6 @@ As convenções do repositório estão em [`CONTEXT.md`](CONTEXT.md).
 
 Protótipo de origem: [`felipemukutu/fia-digital-test`](https://github.com/felipemukutu/fia-digital-test).
 
-> As credenciais em `tasks/001_wordpress_docker_baseline/docker.yaml` são de
+> As credenciais em `src/docker.yaml` são de
 > ambiente local descartável (`admin`/`admin`, `wordpress`/`wordpress`). Não
 > existe segredo real neste repositório e nenhum deve ser adicionado.

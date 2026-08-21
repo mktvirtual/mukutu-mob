@@ -14,8 +14,8 @@ number is the order the work was decided, never renumbered; the name is at most
 five words, lowercase, underscore-separated.
 
 Each task doc says why it exists, what it produces, and what proves it worked —
-including what it depends on. Artifacts live beside the doc, in the folder that
-owns them.
+including what it depends on. The doc is the only thing in the folder: code
+lives in `src/`, and a task points at a path there instead of owning one.
 
 ## The custom fields layer
 
