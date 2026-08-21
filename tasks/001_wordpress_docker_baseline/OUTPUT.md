@@ -24,6 +24,20 @@ fixed to get there.
 
 Login at http://localhost:8081/wp-admin with `admin` / `admin`.
 
+## Driven, not assumed
+
+`qa-drive` logged into wp-admin over CDP with real keystrokes and a real click:
+typed `admin` / `admin` into `#user_login` and `#user_pass`, clicked
+`#wp-submit`, landed on `/wp-admin/`.
+
+The admin menu reads `Dashboard | Posts | Media | Pages | Comments | Appearance
+| Plugins | Users | Tools | Settings | ACF`, and the ACF submenu offers Field
+Groups, Post Types, Taxonomies, Options Pages and Tools.
+
+A screenshot was not saved — `capture/shot.py` rejected the `--path` flag and
+the session was already torn down. The passing assertion above is the evidence
+that stands.
+
 ## What was wrong and how it was fixed
 
 **The provision script never ran.** `command:` was a YAML folded scalar and a
