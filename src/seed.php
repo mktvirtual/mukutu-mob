@@ -68,10 +68,23 @@ JSON
 
 foreach ( $mukutu_seed as $type => $items ) {
 	foreach ( $items as $order => $item ) {
-		$existing = get_page_by_title( $item['title'], OBJECT, $type );
-		$id       = $existing ? $existing->ID : 0;
+		// Chaveado por slug, nao por titulo: os tres depoimentos do prototipo
+		// se chamam "Nome do Aluno" e casar pelo titulo colapsou os tres num
+		// unico post.
+		$slug     = $type . '-' . ( $order + 1 );
+		$existing = get_posts(
+			array(
+				'post_type'        => $type,
+				'name'             => $slug,
+				'post_status'      => 'any',
+				'posts_per_page'   => 1,
+				'suppress_filters' => false,
+			)
+		);
+		$id       = $existing ? $existing[0]->ID : 0;
 		$postarr  = array(
 			'post_type'    => $type,
+			'post_name'    => $slug,
 			'post_title'   => $item['title'],
 			'post_content' => isset( $item['content'] ) ? $item['content'] : '',
 			'post_status'  => 'publish',
@@ -89,6 +102,6 @@ foreach ( $mukutu_seed as $type => $items ) {
 			}
 			update_field( $field, $value, $id );
 		}
-		WP_CLI::log( sprintf( '%s: %s (#%d)', $type, $item['title'], $id ) );
+		WP_CLI::log( sprintf( '%s: %s -> %s (#%d)', $type, $item['title'], $slug, $id ) );
 	}
 }
