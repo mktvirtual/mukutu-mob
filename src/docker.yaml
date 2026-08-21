@@ -35,6 +35,8 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
     volumes:
       - wp:/var/www/html
+      # O tema é editado no host e lido direto pelo container.
+      - ./theme/mukutu-base:/var/www/html/wp-content/themes/mukutu-base
 
   # Runs once, then exits: installs core and the free ACF from wordpress.org.
   provision:
@@ -51,6 +53,7 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
     volumes:
       - wp:/var/www/html
+      - ./theme/mukutu-base:/var/www/html/wp-content/themes/mukutu-base
     user: "33:33"
     entrypoint: ["/bin/sh", "-c"]
     # One list item, so the whole script reaches `sh -c` as a single argument.

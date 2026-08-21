@@ -1,0 +1,41 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="175" height="4" viewBox="0 0 175 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Line Pattern">
+<path d="M32.0513 4H0V0H32.0513V4Z" fill="url(#paint0_linear_0_187)"/>
+<path d="M40.3846 4H36.2179V0H40.3846V4Z" fill="url(#paint1_linear_0_187)"/>
+<path d="M103.526 4H44.5513V0H103.526V4Z" fill="url(#paint2_linear_0_187)"/>
+<path d="M111.859 4H107.692V0H111.859V4Z" fill="url(#paint3_linear_0_187)"/>
+<path d="M175 4H116.026V0H175V4Z" fill="url(#paint4_linear_0_187)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_187" x1="0" y1="2" x2="171.687" y2="2" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C2FA75" stop-opacity="0"/>
+<stop offset="0.201923" stop-color="#9DF686"/>
+<stop offset="0.730769" stop-color="#3BECB1"/>
+<stop offset="1" stop-color="#09E7C7" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_187" x1="0" y1="2" x2="171.687" y2="2" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C2FA75" stop-opacity="0"/>
+<stop offset="0.201923" stop-color="#9DF686"/>
+<stop offset="0.730769" stop-color="#3BECB1"/>
+<stop offset="1" stop-color="#09E7C7" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint2_linear_0_187" x1="0" y1="2" x2="171.687" y2="2" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C2FA75" stop-opacity="0"/>
+<stop offset="0.201923" stop-color="#9DF686"/>
+<stop offset="0.730769" stop-color="#3BECB1"/>
+<stop offset="1" stop-color="#09E7C7" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint3_linear_0_187" x1="0" y1="2" x2="171.687" y2="2" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C2FA75" stop-opacity="0"/>
+<stop offset="0.201923" stop-color="#9DF686"/>
+<stop offset="0.730769" stop-color="#3BECB1"/>
+<stop offset="1" stop-color="#09E7C7" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint4_linear_0_187" x1="0" y1="2" x2="171.687" y2="2" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C2FA75" stop-opacity="0"/>
+<stop offset="0.201923" stop-color="#9DF686"/>
+<stop offset="0.730769" stop-color="#3BECB1"/>
+<stop offset="1" stop-color="#09E7C7" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
