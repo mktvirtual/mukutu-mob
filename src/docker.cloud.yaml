@@ -62,6 +62,8 @@ services:
         define('WP_SITEURL', 'https://wp.mukutu.cloud');
     volumes:
       - wp:/var/www/html
+      # The theme comes from the repository clone Coolify made on the server.
+      - ./theme/mukutu-base:/var/www/html/wp-content/themes/mukutu-base
 
   # Runs once, then exits: installs core and the free ACF from wordpress.org.
   provision:
@@ -82,15 +84,39 @@ services:
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
     volumes:
       - wp:/var/www/html
+      - ./theme/mukutu-base:/var/www/html/wp-content/themes/mukutu-base
     user: "33:33"
     entrypoint: ["/bin/sh", "-c"]
+    # One list item, so the whole script reaches `sh -c` as a single argument:
+    # Coolify splits a plain string on whitespace and shreds the shell syntax.
     command:
-      - >
-        until wp core is-installed --allow-root 2>/dev/null || wp db check --allow-root >/dev/null 2>&1; do sleep 2; done;
-        wp core install --url=https://wp.mukutu.cloud --title="FIA Digital"
-        --admin_user="$${WP_ADMIN_USER}" --admin_password="$${WP_ADMIN_PASSWORD}"
-        --admin_email="$${WP_ADMIN_EMAIL}" --skip-email --allow-root || true;
-        wp plugin install advanced-custom-fields --activate --allow-root;
+      - |
+        set -e
+        until wp db check --allow-root >/dev/null 2>&1; do
+          echo "waiting for database..."
+          sleep 3
+        done
+        if ! wp core is-installed --allow-root; then
+          wp core install \
+            --url=https://wp.mukutu.cloud \
+            --title="FIA Digital" \
+            --admin_user="$${WP_ADMIN_USER}" \
+            --admin_password="$${WP_ADMIN_PASSWORD}" \
+            --admin_email="$${WP_ADMIN_EMAIL}" \
+            --skip-email --allow-root
+        fi
+        wp plugin install advanced-custom-fields --activate --allow-root
+        wp theme activate mukutu-base --allow-root
+        # front-page.php renders the home, and functions.php attaches the ACF
+        # group to whatever page is page_on_front — so one has to exist.
+        if ! wp post list --post_type=page --name=home --field=ID --allow-root | grep -q .; then
+          wp post create --post_type=page --post_title="Home" --post_name=home --post_status=publish --allow-root
+        fi
+        HOME_ID=$$(wp post list --post_type=page --name=home --field=ID --allow-root | head -1)
+        wp option update show_on_front page --allow-root
+        wp option update page_on_front "$$HOME_ID" --allow-root
+        wp core version --allow-root
+        wp theme list --allow-root
         wp plugin list --allow-root
 
 networks:
