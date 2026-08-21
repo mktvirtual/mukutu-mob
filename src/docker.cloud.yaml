@@ -127,6 +127,9 @@ services:
         HOME_ID=$$(wp post list --post_type=page --name=home --field=ID --allow-root | head -1)
         wp option update show_on_front page --allow-root
         wp option update page_on_front "$$HOME_ID" --allow-root
+        # The repeating sections are post types, so a fresh database renders
+        # them empty. Seeded from the prototype's own copy, idempotently.
+        wp eval-file wp-content/mukutu-seed.php --allow-root
         wp core version --allow-root
         wp theme list --allow-root
         wp plugin list --allow-root

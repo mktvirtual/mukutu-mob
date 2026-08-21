@@ -13,4 +13,11 @@ if [ -d "$src" ]; then
   cp -a "$src" "$dst"
   chown -R www-data:www-data "$dst"
 fi
+seed_src=/usr/src/wordpress/wp-content/mukutu-seed.php
+seed_dst=/var/www/html/wp-content/mukutu-seed.php
+if [ -f "$seed_src" ]; then
+  cp -a "$seed_src" "$seed_dst"
+  chown www-data:www-data "$seed_dst"
+fi
+
 exec docker-entrypoint.sh "$@"
