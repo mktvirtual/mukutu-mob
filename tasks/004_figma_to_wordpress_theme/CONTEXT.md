@@ -31,17 +31,34 @@ The theme produced here is compared against those same numbers, and against
 Any difference is the finding. Note it as a difference, never smooth it over by
 hand-editing the output toward 003.
 
-## Source of truth
+## What arrives, and what to do with it
 
-Figma file: `FIA-Digital`, node `1774-1069` — the same frame `felipemukutu/fia-digital-test`
-came from, so the two routes start level.
+**Expect a link, not a file.** The designer sends a Figma URL — usually Dev
+Mode, sometimes plain — and both carry what matters in the query string: the
+file key in the path, the frame in `node-id`.
 
-Read it through the Figma API or an MCP that exposes it. Variables come out as
+```
+https://www.figma.com/design/<file-key>/<name>?node-id=1774-1069&m=dev
+```
+
+Normalise before doing anything: `node-id=1774-1069` in a URL is node
+`1774:1069` in the API. A Dev Mode link differs from a normal one only by
+`&m=dev` — same file, same node, no separate endpoint.
+
+## Reading it
+
+The reference frame is `FIA-Digital`, node `1774-1069` — the same one
+`felipemukutu/fia-digital-test` came from, so both routes start level. A
+different link means a different experiment: say so instead of quietly
+comparing.
+
+Read through the Figma API or an MCP that exposes it. Variables come out as
 tokens for `:root`; the frame tree comes out as structure. Do not retype either
 by hand — that is the step we are trying to measure.
 
-If the file is unreachable, stop and say so. A run against a screenshot is not
-this experiment.
+Access needs a token, and Dev Mode features need a paid seat on that file. If
+the link 403s or the file is unreachable, stop and say which. A run against a
+screenshot is not this experiment.
 
 ## What to build with
 
