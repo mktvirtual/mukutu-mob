@@ -9,6 +9,10 @@
    -------------------------------------------------------------------------- */
 
 function iniciarSliderDepoimentos() {
+  // O slider virou ilha React (HeroUI) na home do tema. Sem o elemento, o
+  // Swiper lança e derruba todos os inits seguintes — inclusive a revelação.
+  if (!document.querySelector(".depoimentos__swiper")) return null;
+
   return new Swiper(".depoimentos__swiper", {
     loop: true,
     speed: 500,
@@ -210,6 +214,10 @@ function iniciarEfeitoScrollCtas() {
 /* --------------------------------------------------------------------------
    Inicialização
    -------------------------------------------------------------------------- */
+
+// As ilhas React montam depois deste script: elas chamam isto ao terminar,
+// para que o conteúdo novo entre no mesmo observador de revelação.
+window.mukutuRevelar = () => iniciarRevelacao();
 
 document.addEventListener("DOMContentLoaded", () => {
   iniciarSliderDepoimentos();

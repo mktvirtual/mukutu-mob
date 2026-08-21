@@ -135,33 +135,7 @@ get_header();
           <p class="cursos__subtitulo"><?php echo esc_html( mukutu_field( 'cursos_subtitulo', 'Escolha a modalidade que se adapta ao seu momento de carreira.' ) ); ?></p>
         </header>
 
-        <div class="cursos__grid">
-<?php
-$cursos = mukutu_query( 'curso' );
-while ( $cursos->have_posts() ) :
-	$cursos->the_post();
-	?>
-          <article class="card-curso" data-reveal>
-            <div class="card-curso__media">
-              <img src="<?php echo esc_url( get_the_post_thumbnail_url( null, 'full' ) ); ?>" alt="">
-            </div>
-            <div class="card-curso__content">
-              <div class="card-curso__top">
-                <p class="card-curso__tag"><?php echo esc_html( mukutu_field( 'tag' ) ); ?></p>
-                <h3 class="card-curso__titulo"><?php the_title(); ?></h3>
-              </div>
-              <a class="card-curso__link" href="<?php echo esc_url( mukutu_field( 'link', '#footer' ) ); ?>">
-                <span><?php echo esc_html( mukutu_field( 'label_do_link', 'Matricule-se' ) ); ?></span>
-                <span class="icon-arrow-diagonal" aria-hidden="true"></span>
-              </a>
-            </div>
-            <img class="card-curso__line" src="<?php echo esc_url( mukutu_asset( 'icons/line-pattern-card.svg' ) ); ?>" alt="" aria-hidden="true">
-          </article>
-	<?php
-endwhile;
-wp_reset_postdata();
-?>
-        </div>
+        <div class="cursos__grid" id="island-cursos" data-props="<?php echo esc_attr( wp_json_encode( mukutu_dados_cursos() ) ); ?>"></div>
 
         <div class="cursos__footer" data-reveal>
           <a class="button button--regular button--stroke-green" href="#cursos">
@@ -194,40 +168,8 @@ wp_reset_postdata();
       <div class="depoimentos__slider">
         <img class="depoimentos__quote-mark" src="<?php echo esc_url( mukutu_asset( 'icons/quote-mark.svg' ) ); ?>" alt="" aria-hidden="true">
 
-        <div class="swiper depoimentos__swiper" data-reveal>
-          <div class="swiper-wrapper">
-<?php
-$depoimentos = mukutu_query( 'depoimento' );
-while ( $depoimentos->have_posts() ) :
-	$depoimentos->the_post();
-	$avatar = get_the_post_thumbnail_url( null, 'full' );
-	?>
-            <div class="swiper-slide depoimento-slide">
-              <p class="depoimento-slide__curso"><?php echo esc_html( mukutu_field( 'curso' ) ); ?></p>
-              <blockquote class="depoimento-slide__citacao"><?php echo esc_html( wp_strip_all_tags( get_the_content() ) ); ?></blockquote>
-              <div class="depoimento-slide__autor">
-                <img class="depoimento-slide__avatar" src="<?php echo esc_url( $avatar ? $avatar : mukutu_asset( 'img/aluno-avatar.png' ) ); ?>" alt="">
-                <div class="depoimento-slide__identidade">
-                  <p class="depoimento-slide__nome"><?php the_title(); ?></p>
-                  <p class="depoimento-slide__cargo"><?php echo esc_html( mukutu_field( 'cargo' ) ); ?></p>
-                </div>
-              </div>
-            </div>
-	<?php
-endwhile;
-wp_reset_postdata();
-?>
-          </div>
-
-          <div class="depoimentos__nav">
-            <button class="depoimentos__arrow" type="button" id="depoimentos-prev" aria-label="Depoimento anterior">
-              <img src="<?php echo esc_url( mukutu_asset( 'icons/slider-prev.svg' ) ); ?>" alt="">
-            </button>
-            <button class="depoimentos__arrow" type="button" id="depoimentos-next" aria-label="Próximo depoimento">
-              <img src="<?php echo esc_url( mukutu_asset( 'icons/slider-next.svg' ) ); ?>" alt="">
-            </button>
-          </div>
-        </div>
+        <div class="depoimentos__ilha" id="island-depoimentos" data-reveal
+             data-props="<?php echo esc_attr( wp_json_encode( mukutu_dados_depoimentos() ) ); ?>"></div>
       </div>
     </section>
 
@@ -251,33 +193,7 @@ wp_reset_postdata();
           </div>
         </header>
 
-        <div class="faq__grid">
-<?php
-$faqs  = mukutu_query( 'faq' );
-$numero = 0;
-while ( $faqs->have_posts() ) :
-	$faqs->the_post();
-	$numero++;
-	$id = 'faq-resposta-' . $numero;
-	?>
-          <article class="card-faq" data-reveal>
-            <button class="card-faq__toggle" type="button"
-                    aria-expanded="false" aria-controls="<?php echo esc_attr( $id ); ?>">
-              <span class="card-faq__number">
-                <span><?php echo esc_html( str_pad( $numero, 2, '0', STR_PAD_LEFT ) ); ?></span>
-                <span class="icon-arrow-diagonal" aria-hidden="true"></span>
-              </span>
-              <span class="card-faq__pergunta"><?php the_title(); ?></span>
-            </button>
-            <div class="card-faq__resposta-wrap" id="<?php echo esc_attr( $id ); ?>">
-              <p class="card-faq__resposta"><?php echo esc_html( wp_strip_all_tags( get_the_content() ) ); ?></p>
-            </div>
-          </article>
-	<?php
-endwhile;
-wp_reset_postdata();
-?>
-        </div>
+        <div class="faq__grid" id="island-faq" data-props="<?php echo esc_attr( wp_json_encode( mukutu_dados_faq() ) ); ?>"></div>
         </div>
       </div>
     </section>

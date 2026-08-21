@@ -1,0 +1,22 @@
+{
+  "name": "mukutu-ui",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.2.2"
+  },
+  "dependencies": {
+    "@heroui/react": "^3.2.4",
+    "react": "^19.2.8",
+    "react-aria": "^3.51.0",
+    "react-dom": "^19.2.8",
+    "react-stately": "^3.49.0"
+  }
+}

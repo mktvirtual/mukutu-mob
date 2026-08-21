@@ -8,3 +8,6 @@ src/prototype/
 
 # sessões do qa-drive
 .qa-drive/
+
+# dependências do build das ilhas React
+node_modules/

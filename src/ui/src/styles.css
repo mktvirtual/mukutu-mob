@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "@heroui/react/styles";
+
+/* As ilhas herdam os tokens do tema — a fonte da verdade continua sendo o
+   styles.css do protótipo, não uma paleta paralela do Tailwind. */
+@theme {
+  --color-aqua: #02ab95;
+  --color-greenfia: #084734;
+  --color-lime: #c2fa75;
+  --color-greenish: #eff5f4;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+}

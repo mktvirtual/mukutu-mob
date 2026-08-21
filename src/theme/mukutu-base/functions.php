@@ -44,6 +44,12 @@ function mukutu_assets() {
 	wp_enqueue_script( 'gsap-scrolltrigger', mukutu_asset( 'vendor/ScrollTrigger.min.js' ), array( 'gsap' ), null, true );
 	wp_enqueue_script( 'mukutu', mukutu_asset( 'script.js' ), array( 'swiper', 'gsap-scrolltrigger' ), null, true );
 
+	// Ilhas React (HeroUI). Só na home, que é a única página que as monta.
+	if ( is_front_page() ) {
+		wp_enqueue_style( 'mukutu-ui', mukutu_asset( 'ui/ui.css' ), array( 'mukutu' ), null );
+		wp_enqueue_script_module( 'mukutu-ui', mukutu_asset( 'ui/ui.js' ), array(), null );
+	}
+
 	if ( is_page_template( 'page-ds.php' ) || is_page( 'ds' ) ) {
 		wp_enqueue_style( 'mukutu-ds', mukutu_asset( 'ds.css' ), array( 'mukutu' ), null );
 	}
@@ -91,3 +97,4 @@ add_filter( 'use_block_editor_for_post', 'mukutu_classic_editor_on_front_page', 
 
 require_once MUKUTU_DIR . '/inc/post-types.php';
 require_once MUKUTU_DIR . '/inc/tokens.php';
+require_once MUKUTU_DIR . '/inc/dados.php';
