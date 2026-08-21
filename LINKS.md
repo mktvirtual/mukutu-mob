@@ -20,7 +20,7 @@ também em `src/docker.yaml` e no `CONTEXT.md` da tarefa correspondente.
 | Design System (tokens) | http://localhost:8081/ds/ | página do tema, template `page-ds.php` |
 | Protótipo estático | https://proto.mukutu.cloud | app `fia-proto` no Coolify, build pack static, direto de `felipemukutu/fia-digital-test` |
 | WordPress (baseline + ACF) | https://wp.mukutu.cloud | app `fia-wordpress` no Coolify, `src/docker.cloud.yaml` deste repo |
-| wp-admin remoto | https://wp.mukutu.cloud/wp-admin | usuário `mukutu`; senha em envless (`mukutu-mono`, env `funnel-dev`, `WP_MUKUTU_CLOUD_WP_ADMIN_PASSWORD`) |
+| wp-admin remoto | https://wp.mukutu.cloud/wp-admin | login `admin` / `admin`, igual ao local — este host é público, e a senha é adivinhável de propósito para a aula |
 | Painel do Coolify | https://coolify.mukutu.cloud | projeto `mukutu`, ambiente `production` |
 
 | O quê | URL |
