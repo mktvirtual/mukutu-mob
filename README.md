@@ -1,0 +1,21 @@
+# mukutu-mob
+
+Migração da home da **FIA Digital** — de protótipo estático (HTML/CSS/JS, gerado
+do Figma) para tema WordPress com Advanced Custom Fields.
+
+O trabalho está em `tasks/`, uma pasta por tarefa. Cada `CONTEXT.md` diz por que
+a tarefa existe, como rodar, e o que prova que funcionou.
+
+| Tarefa | O quê |
+| --- | --- |
+| [001](tasks/001_wordpress_docker_baseline/CONTEXT.md) | Baseline Docker: WordPress latest + ACF free |
+| [002](tasks/002_run_prototype_from_git/CONTEXT.md) | Rodar o protótipo estático e capturar a referência |
+| [003](tasks/003_migrate_prototype_to_wordpress/CONTEXT.md) | Migrar o protótipo para tema WordPress |
+
+As convenções do repositório estão em [`CONTEXT.md`](CONTEXT.md).
+
+Protótipo de origem: [`felipemukutu/fia-digital-test`](https://github.com/felipemukutu/fia-digital-test).
+
+> As credenciais em `tasks/001_wordpress_docker_baseline/docker.yaml` são de
+> ambiente local descartável (`admin`/`admin`, `wordpress`/`wordpress`). Não
+> existe segredo real neste repositório e nenhum deve ser adicionado.

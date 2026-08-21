@@ -1,0 +1,67 @@
+name: fia-wordpress
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      - wp:/var/www/html
+
+  # Runs once, then exits: installs core and the free ACF from wordpress.org.
+  provision:
+    image: wordpress:cli
+    depends_on:
+      wordpress:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      - wp:/var/www/html
+    user: "33:33"
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      until wp core is-installed --allow-root 2>/dev/null || wp db check --allow-root >/dev/null 2>&1; do sleep 2; done;
+      wp core install
+        --url=http://localhost:8080
+        --title="FIA Digital"
+        --admin_user=admin
+        --admin_password=admin
+        --admin_email=dev@example.com
+        --skip-email --allow-root || true;
+      wp plugin install advanced-custom-fields --activate --allow-root;
+      wp plugin list --allow-root
+
+volumes:
+  db:
+  wp:
