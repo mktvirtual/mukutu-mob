@@ -92,23 +92,36 @@ services:
     command:
       - |
         set -e
-        until wp db check --allow-root >/dev/null 2>&1; do
-          echo "waiting for database..."
-          sleep 3
-        done
-        if ! wp core is-installed --allow-root; then
+        # Do NOT probe with `wp db check` or `wp db query`: both shell out to
+        # the mariadb client, which fails with "TLS/SSL error: self-signed
+        # certificate" against this MySQL and loops forever even when the
+        # database is up. Retrying the install itself is the honest probe --
+        # it only succeeds once PHP can reach the database.
+        for i in $$(seq 1 60); do
+          if wp core is-installed --allow-root >/dev/null 2>&1; then break; fi
           wp core install \
             --url=https://wp.mukutu.cloud \
             --title="FIA Digital" \
             --admin_user="$${WP_ADMIN_USER}" \
             --admin_password="$${WP_ADMIN_PASSWORD}" \
             --admin_email="$${WP_ADMIN_EMAIL}" \
-            --skip-email --allow-root
+            --skip-email --allow-root && break
+          echo "waiting for database... ($$i)"
+          sleep 3
+        done
+        wp core is-installed --allow-root
+        # The class logs into this install during the lesson, so the credentials
+        # are deliberately the same as the local compose: admin / admin.
+        if wp user get "$${WP_ADMIN_USER}" --allow-root >/dev/null 2>&1; then
+          wp user update "$${WP_ADMIN_USER}" --user_pass="$${WP_ADMIN_PASSWORD}" --allow-root
+        else
+          wp user create "$${WP_ADMIN_USER}" "$${WP_ADMIN_EMAIL}" \
+            --role=administrator --user_pass="$${WP_ADMIN_PASSWORD}" --allow-root
         fi
         wp plugin install advanced-custom-fields --activate --allow-root
         wp theme activate mukutu-base --allow-root
         # front-page.php renders the home, and functions.php attaches the ACF
-        # group to whatever page is page_on_front — so one has to exist.
+        # group to whatever page is page_on_front -- so one has to exist.
         if ! wp post list --post_type=page --name=home --field=ID --allow-root | grep -q .; then
           wp post create --post_type=page --post_title="Home" --post_name=home --post_status=publish --allow-root
         fi
