@@ -1,0 +1,80 @@
+# WordPress + ACF free, as deployed on Coolify at https://wp.mukutu.cloud.
+# Local development uses src/docker.yaml instead: this file maps no host port
+# (Traefik reaches the container over the `coolify` network) and takes every
+# credential from the environment, so no secret lands in the repository.
+name: fia-wordpress-cloud
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      # Traefik terminates TLS, so WordPress only learns the scheme from the
+      # forwarded header. Without this every generated URL comes out as http.
+      WORDPRESS_CONFIG_EXTRA: |
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+          $$_SERVER['HTTPS'] = 'on';
+        }
+        define('WP_HOME', 'https://wp.mukutu.cloud');
+        define('WP_SITEURL', 'https://wp.mukutu.cloud');
+    volumes:
+      - wp:/var/www/html
+
+  # Runs once, then exits: installs core and the free ACF from wordpress.org.
+  provision:
+    image: wordpress:cli
+    restart: "no"
+    depends_on:
+      wordpress:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - wp:/var/www/html
+    user: "33:33"
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      until wp core is-installed --allow-root 2>/dev/null || wp db check --allow-root >/dev/null 2>&1; do sleep 2; done;
+      wp core install
+        --url=https://wp.mukutu.cloud
+        --title="FIA Digital"
+        --admin_user=${WP_ADMIN_USER}
+        --admin_password=${WP_ADMIN_PASSWORD}
+        --admin_email=${WP_ADMIN_EMAIL}
+        --skip-email --allow-root || true;
+      wp plugin install advanced-custom-fields --activate --allow-root;
+      wp plugin list --allow-root
+
+volumes:
+  db:
+  wp:
