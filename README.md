@@ -13,7 +13,8 @@ que a tarefa existe, como rodar, e o que prova que funcionou. O código está em
 | [002](tasks/002_run_prototype_from_git/CONTEXT.md) | Rodar o protótipo estático e capturar a referência |
 | [003](tasks/003_migrate_prototype_to_wordpress/CONTEXT.md) | Migrar o protótipo para tema WordPress |
 
-As convenções do repositório estão em [`CONTEXT.md`](CONTEXT.md).
+As convenções do repositório estão em [`CONTEXT.md`](CONTEXT.md); as URLs locais
+e remotas em [`LINKS.md`](LINKS.md).
 
 Protótipo de origem: [`felipemukutu/fia-digital-test`](https://github.com/felipemukutu/fia-digital-test).
 

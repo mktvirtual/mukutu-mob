@@ -20,7 +20,7 @@ is what 003 has to reproduce.
 
 ```sh
 gh repo clone felipemukutu/fia-digital-test src/prototype
-cd src/prototype/public && python3 -m http.server 8000   # http://localhost:8000
+cd src/prototype/public && python3 -m http.server 8001   # http://localhost:8001
 ```
 
 A plain static server is enough: no Node, no build, no dependency install.
