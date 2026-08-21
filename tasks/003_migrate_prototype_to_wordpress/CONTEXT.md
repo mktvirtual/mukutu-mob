@@ -60,6 +60,60 @@ environment.
 signed "Nome do Aluno". Reproduce them as-is or raise them; do not silently fix
 them mid-migration.
 
+## What the adaptation taught
+
+**Slice the markup, never retype it.** The HTML was cut by line range and only
+`src`/`href="assets/…"` were rewritten to `mukutu_asset()`. Structure cannot
+drift when no human hand touches it — parity came out right on the first render.
+
+**Count elements to prove parity.** Comparing class counts between the served
+page and the prototype — `card-faq` 3, `data-reveal` 16 — catches a lost block
+in a second, long before anyone opens a screenshot.
+
+**Reproduce defects, do not fix them mid-migration.** The slider still has no
+autoplay and the testimonials still sign "Nome do Aluno", because a fix here
+would hide whether the migration itself worked.
+
+## WordPress traps we hit
+
+**A theme without `index.php` cannot be activated** — activation fails with
+"Template is missing" even when `front-page.php` exists.
+
+**The block editor collapses metaboxes into a zero-height drawer**, which makes
+ACF inputs unclickable to a driver and awkward to a human. A page that is
+entirely ACF gets the classic editor through `use_block_editor_for_post`.
+
+**ACF's `front_page` location needs a real front page** — `show_on_front=page`
+plus a `page_on_front`. With `show_on_front=posts` the group has nowhere to
+appear, even though `front-page.php` still renders.
+
+## Seeding and tooling traps
+
+**ACF reads meta through a companion key.** Setting `tag` is not enough: `_tag`
+must hold the field key (`field_curso_tag`), or `get_field()` returns nothing.
+Seed both, always.
+
+**Docker Desktop does not share `/tmp`.** A script mounted from there arrives
+empty and the container exits silently. Mount from the repository path, which is
+already shared for the theme.
+
+**GSAP reveals need a progressive scroll.** Jumping to the bottom triggered 2 of
+16; stepping 400px at a time triggered 16 of 16. A jump measures nothing.
+
+## What the base theme kept
+
+`functions.php` (asset helper with mtime versioning, enqueue, ACF local JSON
+paths, `mukutu_field()` fallback), `inc/post-types.php` (repetition as post
+types), `header.php`, `index.php` and the `acf-json/` convention.
+
+Everything FIA-specific stayed in `front-page.php`, `footer.php` and the field
+groups. That line is where the next project starts — copy the base, replace the
+templates.
+
+The bind mount matters more than it looks: `./theme/mukutu-base` mounted into
+the container means editing on the host is live in WordPress, with no build and
+no copy step.
+
 ## What proves it works
 
 **Done means an editor changed each field in wp-admin and the page changed**,
