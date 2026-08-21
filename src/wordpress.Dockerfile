@@ -6,3 +6,7 @@
 # /var/www/html on boot, so a theme dropped here reaches the named volume too.
 FROM wordpress:latest
 COPY src/theme/mukutu-base /usr/src/wordpress/wp-content/themes/mukutu-base
+COPY src/wordpress-entrypoint.sh /usr/local/bin/wordpress-entrypoint.sh
+RUN chmod +x /usr/local/bin/wordpress-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/wordpress-entrypoint.sh"]
+CMD ["apache2-foreground"]
